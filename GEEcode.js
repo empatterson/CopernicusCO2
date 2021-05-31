@@ -12,9 +12,9 @@ var mask = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017')
   .filter(ee.Filter.eq('country_co', 'CH'));  
   
 //find the mean CO2 values for 2019 & 2020
-var total19 = America19.reduce(ee.Reducer.sum()).clip(mask)
+var total19 = America19.reduce(ee.Reducer.mean()).clip(mask)
 
-var total20= America20.reduce(ee.Reducer.sum()).clip(mask)
+var total20= America20.reduce(ee.Reducer.mean()).clip(mask)
 
 //Center the map around the defined mask area and set zoom level
 Map.centerObject(mask,4);
