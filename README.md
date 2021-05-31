@@ -12,9 +12,9 @@ micromolicules.
 
 First import the data, select the band and the time period. 
 
-'''js
+```js
 //Import image collection, filter by date and band
 var America19 = ee.ImageCollection('COPERNICUS/S5P/OFFL/L3_CO')
                         .filter(ee.Filter.date('2019-01-01', '2019-12-31'))
                         .select('CO_column_number_density');
-'''
+```
