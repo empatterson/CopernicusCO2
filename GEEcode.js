@@ -1,9 +1,9 @@
 //Import image collection, filter by date and band
-var America19 = ee.ImageCollection('COPERNICUS/S5P/OFFL/L3_CO')
+var China19 = ee.ImageCollection('COPERNICUS/S5P/OFFL/L3_CO')
                         .filter(ee.Filter.date('2019-01-01', '2019-12-31'))
                         .select('CO_column_number_density');
                         
-var America20 = ee.ImageCollection('COPERNICUS/S5P/OFFL/L3_CO')
+var China20 = ee.ImageCollection('COPERNICUS/S5P/OFFL/L3_CO')
                         .filter(ee.Filter.date('2020-01-01', '2020-12-31'))                
                         .select('CO_column_number_density');
                         
@@ -12,9 +12,9 @@ var mask = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017')
   .filter(ee.Filter.eq('country_co', 'CH'));  
   
 //find the mean CO2 values for 2019 & 2020
-var total19 = America19.reduce(ee.Reducer.mean()).clip(mask)
+var total19 = China19.reduce(ee.Reducer.mean()).clip(mask)
 
-var total20= America20.reduce(ee.Reducer.mean()).clip(mask)
+var total20= China20.reduce(ee.Reducer.mean()).clip(mask)
 
 //Center the map around the defined mask area and set zoom level
 Map.centerObject(mask,4);
@@ -27,8 +27,8 @@ var band_viz = {
 }; 
 
 //Add mean CO2 layers to map as 2 seperate years
-Map.addLayer(America19.mean().clip(mask), band_viz, 'Mean 2019');
-Map.addLayer(America20.mean().clip(mask), band_viz, 'Mean 2020');
+Map.addLayer(China19.mean().clip(mask), band_viz, 'Mean 2019');
+Map.addLayer(China20.mean().clip(mask), band_viz, 'Mean 2020');
 
 //Calculate Statistics on the mean levels for each year
 var stats19 = total19.reduceRegion({
@@ -47,5 +47,31 @@ var stats20 = total20.reduceRegion({
 print(stats19, 'Mean CO2 2019')
 print(stats20, 'Mean CO2 2020')
 
-
+///This section of code does not run:
+// Define a chart of mean values and print it to the console.
+var chart = ui.Chart.image
+                .doySeriesByYear({
+                  imageCollection: total19,
+                  bandName: 'CO_column_number_density',
+                  region: mask.geometry(),
+                  scale: 5000,
+                  regionReducer: ee.Reducer.mean(),
+                  sameDayReducer: ee.Reducer.mean(),
+                  startDay: 60,
+                  endDay: 75
+                })
+                .setOptions({
+                  title: 'Average Co2 Value',
+                  hAxis: {
+                    title: 'Day of year',
+                    titleTextStyle: {italic: false, bold: true}
+                  },
+                  vAxis: {
+                    title: 'Co2 (x1e4)',
+                    titleTextStyle: {italic: false, bold: true}
+                  },
+                  lineWidth: 5,
+                  colors: ['39a8a7', '9c4f97'],
+                });
+print(chart);
 
