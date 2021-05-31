@@ -11,3 +11,8 @@ world collected from the Sentinel 5P TROPOMI satellite. This code specifically l
 micromolicules. 
 
 First import the data, select the band and the time period. 
+
+//Import image collection, filter by date and band
+var America19 = ee.ImageCollection('COPERNICUS/S5P/OFFL/L3_CO')
+                        .filter(ee.Filter.date('2019-01-01', '2019-12-31'))
+                        .select('CO_column_number_density');
