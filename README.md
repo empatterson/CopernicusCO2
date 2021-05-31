@@ -58,3 +58,14 @@ Map.addLayer(America19.mean().clip(mask), band_viz, 'Mean 2019');
 Map.addLayer(America20.mean().clip(mask), band_viz, 'Mean 2020');
 ```
 
+To calculate the mean CO2 levels within China for each year, the mean.reducer can be used again to find the mean for the whole country
+
+```js
+//Calculate Statistics on the mean levels for each year
+var stats19 = total19.reduceRegion({
+  reducer: ee.Reducer.mean(), 
+  geometry: mask.geometry(),
+  scale: 5000
+  })
+```
+
