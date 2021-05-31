@@ -28,7 +28,7 @@ var mask = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017')
   .filter(ee.Filter.eq('country_co', 'CH'));  
 ```
 
-Once the data is cropped to the desired boundaries, the mean values can be calculated for each year
+Once the data is cropped to the desired boundaries, the mean CO2 values can be calculated for each year using Reducer.mean to aggregate the data over the whole year.  
 
 ```js
 //find the mean CO2 values for 2019 & 2020
@@ -36,3 +36,25 @@ var total19 = America19.reduce(ee.Reducer.mean()).clip(mask)
 
 var total20= America20.reduce(ee.Reducer.mean()).clip(mask)
 ```
+
+Before adding the mean Co2 layers to the output map, set some visualization parameters like where the map will zoom and the color palett used. 
+
+```js
+//Center the map around the defined mask area and set zoom level
+Map.centerObject(mask,4);
+
+//Define visualization parameters
+var band_viz = {
+  min: 0,
+  max: 0.05,
+  palette: ['black', 'blue', 'purple', 'cyan', 'green', 'yellow', 'red']
+}; 
+```
+With these parameters set, the two map layers can be correctly displayed on the map. 
+
+```js
+//Add mean CO2 layers to map as 2 seperate years
+Map.addLayer(America19.mean().clip(mask), band_viz, 'Mean 2019');
+Map.addLayer(America20.mean().clip(mask), band_viz, 'Mean 2020');
+```
+
