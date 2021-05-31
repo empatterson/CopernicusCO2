@@ -42,4 +42,4 @@ var stats20 = total20.reduceRegion({
 print(stats19, 'Mean CO2 2019')
 print(stats20, 'Mean CO2 2020')
 
-// Define a chart of mean values and print it to the console.
+
